@@ -48,7 +48,6 @@
 # Individual null bytes and null bytes in different words are fine.
 .set egg, 0x504f4e59 # PONY
 .set loadaddress, 0x80003500 # 0x100 bytes should be enought to make sure we don't clobber ourselves.
-.set payloadLength, 0x00010004 # Should be good enough. (TODO: Embed size)
 
 _start:
 
@@ -68,7 +67,7 @@ loop_start:
 	cmplw r5, r3
 	bne loop_start
 
-	lwz r5, 4(r4) # (size of payload.bin - 0x18) / 4 TODO: Implement this
+	lwz r5, 4(r4) # (size of payload.bin - 0x18) / 4
 	addi r4, r4, 4
 	lwz r30, 4(r4) # Embedded payload length
 	addi r4, r4, 4
@@ -78,7 +77,6 @@ loop_start:
 	addi r4, r4, 8
 
 	lis r3, loadaddress@h ; ori r3, r3, loadaddress@l
-	# lis r5, payloadLength@h ; ori r5, r5, payloadLength@l # TODO: Remove
 	mr r31, r3 # Save r3 before call.
 
 	mtctr r5
