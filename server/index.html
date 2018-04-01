@@ -1,0 +1,56 @@
+﻿<html>
+	<head>
+		<title>FlashHax</title>
+		<style>
+			body {
+				background-color: #4b9dbc;
+			}
+			span {
+				display: inline-block;
+				width: 50px;
+				margin: 30px;
+				padding: 30px;
+				border: 3px solid;
+				border-color: black;
+				font-size: 50px;
+			}
+		</style>
+	</head>
+	<body>
+		<center>
+			<br>
+			<br>
+			<h1>Welcome to FlashHax</h1>
+			<h2>Please select your Wii's region below</h2>
+			<span onclick="setupPage('U')">U</span>
+			<span onclick="setupPage('E')">E</span>
+			<span onclick="setupPage('J')">J</span>
+		</center>
+	<script>
+		//Stolen from https://stackoverflow.com/questions/2090551/parse-query-string-in-javascript
+		function getQueryVariable(variable) {
+			var query = window.location.search.substring(1);
+			var vars = query.split('&');
+			for (var i = 0; i < vars.length; i++) {
+				var pair = vars[i].split('=');
+   			    if (decodeURIComponent(pair[0]) == variable) {
+					return decodeURIComponent(pair[1]);
+				}
+			}
+		}
+		
+		var shouldRunHax = document.location.search.indexOf("doHax") != -1 && document.location.hash.indexOf("stop") == -1;
+		var shouldHideMenu = document.location.hash.indexOf("stop") != -1;
+		if (shouldRunHax){
+			var flashHax = '<object data="menu.swf"><param name="allowScriptAccess" value="always"><param name="FlashVars" value="Region=' + getQueryVariable("region") + '"></object>';
+			document.body.innerHTML = flashHax;
+		} else if (shouldHideMenu){
+			document.body.innerHTML = "<center><br><br><h1>Please bookmark this page now</h1></center>";
+		}
+		
+		function setupPage(region){
+			document.location = "?region=" + region + "&doHax#stop";
+		}
+	</script>
+	</body>
+</html>
